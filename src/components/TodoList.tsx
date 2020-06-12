@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoItem from "./TodoItem";
 import "./TodoList.css";
+import AddTodo from "./AddTodo";
 
 interface Props {}
 
@@ -30,6 +31,7 @@ const TodoList = (props: Props) => {
       {sortTodos(todos).map((item) => (
         <TodoItem text={item.text} />
       ))}
+      <AddTodo onAdd={addTodo} />
     </div>
   );
 };
