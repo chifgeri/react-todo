@@ -20,7 +20,7 @@ const TodoList = (props: Props) => {
       {
         text,
         done: false,
-        id: Math.round(Math.random() * 1000),
+        id: Math.round(Math.random() * 100000),
         place: maxPlace,
       },
     ]);
@@ -56,7 +56,7 @@ const TodoList = (props: Props) => {
     let list = todos;
     if (todo.done) {
       // When the place changes to -1 we should update the following todo's places
-      if (oldVal && oldVal?.place > todo.place) {
+      if (oldVal) {
         list = list.map((item) => {
           if (item.place > oldVal.place) {
             item.place--;
@@ -82,6 +82,7 @@ const TodoList = (props: Props) => {
           if (todo.place >= 1 && item.place > todo.place) {
             item.place--;
           }
+          console.log(item.place);
           return item;
         }),
     ]);
