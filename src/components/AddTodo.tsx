@@ -20,8 +20,10 @@ const AddTodo = (props: Props) => {
       <input
         type="button"
         onClick={() => {
-          props.onAdd(text);
-          setText("");
+          if (text.length > 0) {
+            props.onAdd(text);
+            setText("");
+          }
         }}
         value="Add Todo"
       />
