@@ -8,6 +8,7 @@ interface Props {
   todo: Todo;
   last: boolean;
   updateTodo: (todo: Todo) => void;
+  remove: (todo: Todo) => void;
 }
 
 const TodoItem = (props: Props) => {
@@ -40,6 +41,13 @@ const TodoItem = (props: Props) => {
           }}
           disabled={props.todo.done || props.last}
           value="Down"
+        />
+        <input
+          type="button"
+          onClick={() => {
+            props.remove(props.todo);
+          }}
+          value="Remove"
         />
       </div>
     </div>

@@ -74,6 +74,20 @@ const TodoList = (props: Props) => {
     setTodos([...list.filter((item) => item.id !== todo.id), todo]);
   };
 
+  const removeTodo = (todo: Todo) => {
+    setTodos([
+      ...todos
+        .filter((it) => it.id !== todo.id)
+        .map((item) => {
+          if (todo.place >= 1 && item.place > todo.place) {
+            item.place--;
+          }
+          return item;
+        }),
+    ]);
+    if (todo.place >= 1) setMaxPlace(maxPlace - 1);
+  };
+
   return (
     <div className="todo-list-container">
       <div className="list-name-span">
@@ -91,6 +105,7 @@ const TodoList = (props: Props) => {
           }}
           last={item.place === todos.filter((t) => t.done === false).length}
           updateTodo={updateTodo}
+          remove={removeTodo}
         />
       ))}
       <AddTodo onAdd={addTodo} />
