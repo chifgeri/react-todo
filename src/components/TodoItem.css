@@ -1,0 +1,6 @@
+.todo-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  border-top: 2px lightgray solid;
+}

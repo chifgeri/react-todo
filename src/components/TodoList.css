@@ -1,0 +1,20 @@
+.todo-list-container {
+  display: flex;
+  margin: 1.5em;
+  max-width: 50%;
+  flex-direction: column;
+  box-shadow: 10px 10px 16px 0px rgba(138, 115, 138, 1);
+  border-radius: 10px;
+}
+
+.list-name-span {
+  background-color: dodgerblue;
+  padding-left: 1.25em;
+  border-radius: 10px 10px 0 0;
+}
+
+.list-name {
+  font-size: 1.5em;
+  color: azure;
+  margin: 10px;
+}
