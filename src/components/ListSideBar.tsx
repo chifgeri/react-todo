@@ -17,6 +17,7 @@ const ListSideBar = (props: Props) => {
     <div className="side-bar-container">
       {props.list.map((item) => (
         <div
+          key={item.id}
           className="side-bar-item"
           onMouseEnter={() => {
             setHoverItem(item.id);

@@ -87,7 +87,6 @@ const TodoList = (props: Props) => {
           if (todo.place >= 1 && item.place > todo.place) {
             item.place--;
           }
-          console.log(item.place);
           return item;
         }),
     ]);

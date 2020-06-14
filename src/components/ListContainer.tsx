@@ -71,6 +71,7 @@ const ListContainer = (props: Props) => {
           .sort((a, b) => (a.priority > b.priority ? 1 : 0))
           .map((item) => (
             <TodoList
+              key={item.id}
               list={item}
               setTodos={(todos) => updateTodos(item, todos)}
             />
