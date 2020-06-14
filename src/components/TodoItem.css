@@ -4,3 +4,8 @@
   padding: 1em;
   border-top: 2px lightgray solid;
 }
+
+.control-buttons {
+  margin-left: 10px;
+  margin-right: 10px;
+}

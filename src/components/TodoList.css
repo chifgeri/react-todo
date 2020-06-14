@@ -1,7 +1,8 @@
 .todo-list-container {
   display: flex;
   margin: 1.5em;
-  max-width: 50%;
+  max-width: 80%;
+  min-width: 40%;
   flex-direction: column;
   box-shadow: 10px 10px 16px 0px rgba(138, 115, 138, 1);
   border-radius: 10px;
