@@ -1,0 +1,24 @@
+.side-bar-container {
+  background-color: dodgerblue;
+  display: flex;
+  max-width: 250px;
+  min-width: 250px;
+  flex-direction: column;
+  position: absolute;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+
+.side-bar-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  font-size: 1.5em;
+  color: white;
+}
+
+.side-bar-item:hover {
+  background-color: blue;
+  cursor: pointer;
+}
