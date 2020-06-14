@@ -31,12 +31,39 @@ const ListContainer = (props: Props) => {
     ]);
   };
 
+  const moveTodoList = (item: TList, direction: string) => {
+    // get todos without this item
+    let list = todoLists.filter((it) => it.id !== item.id);
+    if (direction === "down") {
+      // Find the todo under the item
+      let downItem = list.find((it) => it.priority === item.priority + 1);
+      // When found switch the place value
+      if (downItem) {
+        downItem.priority = item.priority;
+        setTodoLists([...list, { ...item, priority: item.priority + 1 }]);
+      }
+    }
+
+    if (direction === "up") {
+      // Find the todo over the item
+      let upperItem = list.find((it) => it.priority === item.priority - 1);
+      // When found switch the place value
+      if (upperItem) {
+        upperItem.priority = item.priority;
+        setTodoLists([...list, { ...item, priority: item.priority - 1 }]);
+      }
+    }
+  };
+
   return (
     <div className="list-container">
       <ListSideBar
         list={todoLists}
         addNewList={(n) => {
           addTodoList(n);
+        }}
+        moveList={(item, direction) => {
+          moveTodoList(item, direction);
         }}
       />
       <div className="todo-lists">

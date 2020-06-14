@@ -5,6 +5,7 @@ import "./ListSideBar.css";
 interface Props {
   list: TodoList[];
   addNewList: (name: string) => void;
+  moveList: (item: TodoList, direction: string) => void;
 }
 
 const ListSideBar = (props: Props) => {
@@ -27,8 +28,24 @@ const ListSideBar = (props: Props) => {
           <p>{item.name}</p>
           {item.id === hoverItem && (
             <div>
-              <input type="button" onClick={() => {}} value="Up" />
-              <input type="button" onClick={() => {}} value="Down" />
+              {item.priority > 1 && (
+                <input
+                  type="button"
+                  onClick={() => {
+                    props.moveList(item, "up");
+                  }}
+                  value="Up"
+                />
+              )}
+              {item.priority < props.list.length && (
+                <input
+                  type="button"
+                  onClick={() => {
+                    props.moveList(item, "down");
+                  }}
+                  value="Down"
+                />
+              )}
             </div>
           )}
         </div>
@@ -45,8 +62,10 @@ const ListSideBar = (props: Props) => {
           />
           <button
             onClick={() => {
-              props.addNewList(newListName);
-              setNewListName("");
+              if (newListName.length > 0) {
+                props.addNewList(newListName);
+                setNewListName("");
+              }
               setShowInput(false);
             }}
           >
