@@ -92,7 +92,7 @@ const ListContainer = (props: Props) => {
       />
       <div className="todo-lists">
         {todoLists
-          .sort((a, b) => (a.priority > b.priority ? 1 : 0))
+          .sort((a, b) => (a.priority > b.priority ? 1 : -1))
           .map((item) => (
             <TodoList
               key={item.id}

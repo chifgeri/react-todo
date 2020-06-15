@@ -13,10 +13,12 @@ interface Props {
 const TodoList = (props: Props) => {
   const { todos, name } = props.list;
   const setTodos = props.setTodos;
-  const [maxPlace, setMaxPlace] = useState<number>(1);
+  const [maxPlace, setMaxPlace] = useState<number>(
+    todos.filter((item) => !item.done).length + 1
+  );
 
   const sortTodos = (todoList: any) => {
-    return todos.sort((a, b) => (a.place >= b.place ? 1 : 0));
+    return todos.sort((a, b) => (a.place >= b.place ? 1 : -1));
   };
 
   const addTodo = (text: string) => {
