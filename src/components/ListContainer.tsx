@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TodoList as TList } from "../data/todolist.dto";
 import ListSideBar from "./ListSideBar";
 import TodoList from "./TodoList";
@@ -9,26 +9,50 @@ interface Props {}
 
 const ListContainer = (props: Props) => {
   const [todoLists, setTodoLists] = useState<TList[]>([]);
-  const [maxPriority, setMaxPriority] = useState<number>(1);
+  const [maxPriority, setMaxPriority] = useState<number>(todoLists.length);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/todos")
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((json) => {
+        setTodoLists(json.data);
+      });
+  }, []);
+
+  useEffect(() => {
+    setMaxPriority(todoLists.length + 1);
+  }, [todoLists]);
 
   const addTodoList = (name: string) => {
-    setTodoLists([
-      ...todoLists,
-      {
-        name,
-        todos: [],
-        id: Math.round(Math.random() * 10000),
-        priority: maxPriority,
-      },
-    ]);
-    setMaxPriority(maxPriority + 1);
+    const newList = {
+      name,
+      todos: [],
+      id: Math.round(Math.random() * 10000),
+      priority: maxPriority,
+    };
+
+    setTodoLists([...todoLists, newList]);
+
+    fetch("http://localhost:8000/todos", {
+      method: "POST",
+      body: new Blob([JSON.stringify({ data: newList }, null, 2)], {
+        type: "application/json",
+      }),
+    });
   };
 
   const updateTodos = (item: TList, todos: Todo[]) => {
-    setTodoLists([
-      ...todoLists.filter((it) => item.id !== it.id),
-      { ...item, todos },
-    ]);
+    const todoList = { ...item, todos };
+    setTodoLists([...todoLists.filter((it) => item.id !== it.id), todoList]);
+    fetch("http://localhost:8000/todos", {
+      method: "PUT",
+      body: new Blob([JSON.stringify({ data: todoList }, null, 2)], {
+        type: "application/json",
+      }),
+    });
   };
 
   const moveTodoList = (item: TList, direction: string) => {

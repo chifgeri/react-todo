@@ -25,7 +25,7 @@ const getTodoLists = () => {
 const saveTodoList = async (todoList) => {
   var tx = db.transaction("todoLists", "readwrite");
   var store = tx.objectStore("todoLists");
-  await store.put(todoList);
+  await store.put(todoList.data);
   return tx.complete;
 };
 
@@ -48,6 +48,7 @@ self.addEventListener("activate", function (event) {
 });
 
 self.addEventListener("fetch", function (event) {
+  const req = event.request.clone();
   event.respondWith(
     fetch(event.request)
       .then(function (response) {
@@ -70,9 +71,8 @@ self.addEventListener("fetch", function (event) {
       })
       .catch((error) => {
         // No internet conection, or server unavailable serve and save data from indexed db
-        console.log(event.request);
 
-        if (event.request.method === "GET") {
+        if (req.method === "GET") {
           return getTodoLists().then((data) => {
             var blob = new Blob([JSON.stringify({ data: data }, null, 2)], {
               type: "application/json",
@@ -80,14 +80,18 @@ self.addEventListener("fetch", function (event) {
             return new Response(blob, { status: 200 });
           });
         }
-        if (event.request.method === "POST" && event.request.url === "/todos") {
-          const todoList = event.request.json();
-          return saveTodoList(todoList).then(() => {
-            var blob = new Blob([JSON.stringify({ data: todoList }, null, 2)], {
-              type: "application/json",
+        if (req.method === "POST" || req.method === "PUT") {
+          return req
+            .json()
+            .then((data) => data)
+            .then((data) => {
+              return saveTodoList(data).then(() => {
+                var blob = new Blob([JSON.stringify({ data }, null, 2)], {
+                  type: "application/json",
+                });
+                return new Response(blob, { status: 200 });
+              });
             });
-            return new Response(blob, { status: 200 });
-          });
         }
       })
   );
