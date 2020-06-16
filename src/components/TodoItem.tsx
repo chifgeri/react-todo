@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./TodoItem.css";
 import { Todo } from "../data/todo.dto";
 
@@ -9,6 +9,7 @@ interface Props {
   last: boolean;
   updateTodo: (todo: Todo) => void;
   remove: (todo: Todo) => void;
+  otherLists: { id: number; name: string }[];
 }
 
 const TodoItem = (props: Props) => {

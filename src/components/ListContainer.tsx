@@ -32,6 +32,7 @@ const ListContainer = (props: Props) => {
       todos: [],
       id: Math.round(Math.random() * 10000),
       priority: maxPriority,
+      maxPlace: 1,
     };
 
     setTodoLists([...todoLists, newList]);
@@ -44,15 +45,8 @@ const ListContainer = (props: Props) => {
     });
   };
 
-  const updateTodos = (item: TList, todos: Todo[]) => {
-    const todoList = { ...item, todos };
-    setTodoLists([...todoLists.filter((it) => item.id !== it.id), todoList]);
-    fetch("http://localhost:8000/todos", {
-      method: "PUT",
-      body: new Blob([JSON.stringify({ data: todoList }, null, 2)], {
-        type: "application/json",
-      }),
-    });
+  const updateTodoList = (list: TList) => {
+    setTodoLists([...todoLists.filter((it) => list.id !== it.id), list]);
   };
 
   const moveTodoList = (item: TList, direction: string) => {
@@ -97,7 +91,10 @@ const ListContainer = (props: Props) => {
             <TodoList
               key={item.id}
               list={item}
-              setTodos={(todos) => updateTodos(item, todos)}
+              setTodos={(list) => updateTodoList(list)}
+              otherLists={todoLists
+                .filter((it) => it.id !== item.id)
+                .map((list) => ({ id: list.id, name: list.name }))}
             />
           ))}
       </div>
