@@ -3,11 +3,16 @@ import TodoItem from "./TodoItem";
 import "./TodoList.css";
 import AddTodo from "./AddTodo";
 import { Todo } from "../data/todo.dto";
+import { TodoList as TList } from "../data/todolist.dto";
 
-interface Props {}
+interface Props {
+  list: TList;
+  setTodos: (todos: Todo[]) => void;
+}
 
 const TodoList = (props: Props) => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const { todos, name } = props.list;
+  const setTodos = props.setTodos;
   const [maxPlace, setMaxPlace] = useState<number>(1);
 
   const sortTodos = (todoList: any) => {
@@ -82,7 +87,6 @@ const TodoList = (props: Props) => {
           if (todo.place >= 1 && item.place > todo.place) {
             item.place--;
           }
-          console.log(item.place);
           return item;
         }),
     ]);
@@ -92,7 +96,7 @@ const TodoList = (props: Props) => {
   return (
     <div className="todo-list-container">
       <div className="list-name-span">
-        <p className="list-name">Todo list</p>
+        <p className="list-name">{name}</p>
       </div>
       {sortTodos(todos).map((item) => (
         <TodoItem

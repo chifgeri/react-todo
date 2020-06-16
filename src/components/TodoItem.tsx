@@ -25,7 +25,7 @@ const TodoItem = (props: Props) => {
         }}
       />
       {props.todo.text}
-      <div>
+      <div className="control-buttons">
         <input
           type="button"
           onClick={() => {

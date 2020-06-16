@@ -1,0 +1,14 @@
+.list-container {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+}
+
+.todo-lists {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  /* Margin to shift drom sidebar*/
+  margin-left: 250px;
+}
