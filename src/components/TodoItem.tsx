@@ -10,9 +10,11 @@ interface Props {
   updateTodo: (todo: Todo) => void;
   remove: (todo: Todo) => void;
   otherLists: { id: number; name: string }[];
+  moveBetweenLists: (place: number) => void;
 }
 
 const TodoItem = (props: Props) => {
+  const [moveClicked, setMoveClicked] = useState<boolean>(false);
   return (
     <div className="todo-container">
       <input
@@ -27,6 +29,30 @@ const TodoItem = (props: Props) => {
       />
       {props.todo.text}
       <div className="control-buttons">
+        {moveClicked ? (
+          <select
+            onChange={(e: any) => {
+              props.moveBetweenLists(e.target.value);
+              setMoveClicked(false);
+            }}
+          >
+            {props.otherLists.map((list) => (
+              <option key={list.id} value={list.id}>
+                {list.name}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <div>
+            {props.otherLists.length > 0 && (
+              <input
+                type="button"
+                onClick={() => setMoveClicked(true)}
+                value="Move to..."
+              />
+            )}
+          </div>
+        )}
         <input
           type="button"
           onClick={() => {

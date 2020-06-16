@@ -73,6 +73,33 @@ const ListContainer = (props: Props) => {
     }
   };
 
+  const moveBetweenLists = (todo: Todo, listID: number) => {
+    // Find target list
+    const tList = todoLists.find((it) => {
+      return it.id === Number(listID);
+    });
+    //Remove todo from the source list
+    const sList = todoLists.find((item) => item.todos.includes(todo));
+    if (sList && tList) {
+      //Remove todo from the source list
+      sList.todos = sList.todos.filter((item) => item.id !== todo.id);
+      if (todo.place > 0) {
+        sList.maxPlace = sList.maxPlace + 1;
+      }
+      // Add todo to target list and increment maxPlace
+      tList.todos.push({ ...todo, place: tList.maxPlace });
+      tList.maxPlace++;
+      // Set new state
+      setTodoLists([
+        ...todoLists.filter(
+          (item) => item.id !== sList.id && item.id !== tList.id
+        ),
+        sList,
+        tList,
+      ]);
+    }
+  };
+
   return (
     <div className="list-container">
       <ListSideBar
@@ -92,6 +119,9 @@ const ListContainer = (props: Props) => {
               key={item.id}
               list={item}
               setTodos={(list) => updateTodoList(list)}
+              moveBetweenLists={(todo, listId) =>
+                moveBetweenLists(todo, listId)
+              }
               otherLists={todoLists
                 .filter((it) => it.id !== item.id)
                 .map((list) => ({ id: list.id, name: list.name }))}

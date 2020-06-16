@@ -8,6 +8,7 @@ import { TodoList as TList } from "../data/todolist.dto";
 interface Props {
   list: TList;
   setTodos: (todos: TList) => void;
+  moveBetweenLists: (todo: Todo, listID: number) => void;
   otherLists: { id: number; name: string }[];
 }
 
@@ -129,6 +130,9 @@ const TodoList = (props: Props) => {
           updateTodo={updateTodo}
           remove={removeTodo}
           otherLists={props.otherLists}
+          moveBetweenLists={(listID: number) =>
+            props.moveBetweenLists(item, listID)
+          }
         />
       ))}
       <AddTodo onAdd={addTodo} />
