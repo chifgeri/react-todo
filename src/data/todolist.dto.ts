@@ -5,4 +5,5 @@ export interface TodoList {
   name: string;
   todos: Todo[];
   priority: number;
+  maxPlace: number;
 }
