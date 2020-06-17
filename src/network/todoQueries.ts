@@ -1,7 +1,7 @@
 import { TodoList } from "../data/todolist.dto";
 
 export const postNewTodoList = (newList: TodoList) =>
-  fetch("http://localhost:8000/todos", {
+  fetch("/todos", {
     method: "POST",
     headers: {
       accept: "application/json",
@@ -10,10 +10,10 @@ export const postNewTodoList = (newList: TodoList) =>
     body: JSON.stringify({ data: newList }),
   });
 
-export const getAllTodoList = () => fetch("http://localhost:8000/todos");
+export const getAllTodoList = () => fetch("/todos");
 
 export const putTodoList = (list: TodoList) =>
-  fetch("http://localhost:8000/todos", {
+  fetch("/todos", {
     method: "PUT",
     headers: {
       Accept: "application/json",
