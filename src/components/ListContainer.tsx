@@ -4,6 +4,11 @@ import ListSideBar from "./ListSideBar";
 import TodoList from "./TodoList";
 import "./ListContainer.css";
 import { Todo } from "../data/todo.dto";
+import {
+  postNewTodoList,
+  getAllTodoList,
+  putTodoList,
+} from "../network/todoQueries";
 
 interface Props {}
 
@@ -12,14 +17,15 @@ const ListContainer = (props: Props) => {
   const [maxPriority, setMaxPriority] = useState<number>(todoLists.length);
 
   useEffect(() => {
-    fetch("http://localhost:8000/todos")
+    getAllTodoList()
       .then((response) => {
         console.log(response);
         return response.json();
       })
       .then((json) => {
         setTodoLists(json.data);
-      });
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
@@ -36,17 +42,12 @@ const ListContainer = (props: Props) => {
     };
 
     setTodoLists([...todoLists, newList]);
-
-    fetch("http://localhost:8000/todos", {
-      method: "POST",
-      body: new Blob([JSON.stringify({ data: newList }, null, 2)], {
-        type: "application/json",
-      }),
-    });
+    postNewTodoList(newList);
   };
 
   const updateTodoList = (list: TList) => {
     setTodoLists([...todoLists.filter((it) => list.id !== it.id), list]);
+    putTodoList(list);
   };
 
   const moveTodoList = (item: TList, direction: string) => {
@@ -58,7 +59,10 @@ const ListContainer = (props: Props) => {
       // When found switch the place value
       if (downItem) {
         downItem.priority = item.priority;
-        setTodoLists([...list, { ...item, priority: item.priority + 1 }]);
+        item.priority++;
+        setTodoLists([...list, item]);
+        putTodoList(downItem);
+        putTodoList(item);
       }
     }
 
@@ -68,7 +72,10 @@ const ListContainer = (props: Props) => {
       // When found switch the place value
       if (upperItem) {
         upperItem.priority = item.priority;
-        setTodoLists([...list, { ...item, priority: item.priority - 1 }]);
+        item.priority--;
+        putTodoList(upperItem);
+        putTodoList(item);
+        setTodoLists([...list, item]);
       }
     }
   };
@@ -97,6 +104,9 @@ const ListContainer = (props: Props) => {
         sList,
         tList,
       ]);
+      // Send them to server (or save to db if no internet)
+      putTodoList(sList);
+      putTodoList(tList);
     }
   };
 
