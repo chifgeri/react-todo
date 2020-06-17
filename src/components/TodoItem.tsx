@@ -31,11 +31,18 @@ const TodoItem = (props: Props) => {
       <div className="control-buttons">
         {moveClicked ? (
           <select
+            placeholder="Other list"
+            defaultValue=""
             onChange={(e: any) => {
-              props.moveBetweenLists(e.target.value);
+              if (e.target.value >= 0) {
+                props.moveBetweenLists(e.target.value);
+              }
               setMoveClicked(false);
             }}
           >
+            <option key={0} value={0}>
+              None
+            </option>
             {props.otherLists.map((list) => (
               <option key={list.id} value={list.id}>
                 {list.name}
